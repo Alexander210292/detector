@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Capturas de Acoso</title>
+</head>
+<body>
+    <h2>Capturas registradas</h2>
+    {% for item in data %}
+        <div>
+            <p>{{ item.timestamp }} - {{ item.detected_class }}</p>
+            <img src="{{ url_for('static', filename='../capturas/' + item.image_path) }}" width="300">
+        </div>
+    {% endfor %}
+</body>
+</html>

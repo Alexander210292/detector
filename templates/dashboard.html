@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+</head>
+<body>
+    <h2>Detección en Vivo</h2>
+    <video id="video" autoplay></video>
+    <script>
+        const video = document.getElementById('video');
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                video.srcObject = stream;
+                setInterval(captureFrame, 3000); // cada 3 segundos
+            });
+
+        function captureFrame() {
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0);
+            canvas.toBlob(blob => {
+                const formData = new FormData();
+                formData.append('frame', blob, 'frame.jpg');
+                fetch('/upload_frame', {
+                    method: 'POST',
+                    body: formData
+                }).then(res => res.json())
+                  .then(data => {
+                      if (data.detected) {
+                          alert('⚠️ Posible acoso detectado. Imagen capturada.');
+                      }
+                  });
+            }, 'image/jpeg');
+        }
+    </script>
+</body>
+</html>

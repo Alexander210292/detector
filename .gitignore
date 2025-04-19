@@ -1,0 +1,14 @@
+# .gitignore
+env/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+*.log
+*.db
+*.DS_Store
+.vscode/
+.idea/
+*.pt
+static/capturas/

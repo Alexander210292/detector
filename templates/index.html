@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Inicio{% endblock %}
+
+{% block content %}
+<div class="text-center">
+    <h1 class="display-5 fw-bold">Bienvenido al Sistema de Detección de Acoso</h1>
+    <p class="lead mt-3">Este sistema utiliza inteligencia artificial para detectar comportamientos sospechosos en tiempo real.</p>
+    
+    {% if 'usuario_id' in session %}
+        <a href="{{ url_for('camaras') }}" class="btn btn-success btn-lg mt-4">
+            Ir a las Cámaras
+        </a>
+    {% else %}
+        <a href="{{ url_for('login') }}" class="btn btn-primary btn-lg mt-4">
+            Iniciar Sesión
+        </a>
+    {% endif %}
+</div>
+{% endblock %}

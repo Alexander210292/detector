@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Cámaras{% endblock %}
+{% block content %}
+<h1>📹 Cámaras en tiempo real</h1>
+<h2>👁️ Cámara en Vivo - Bienvenido {{ nombre }}</h2>
+<br><br>
+
+<!-- Botones de control -->
+<button onclick="iniciarCamara()">▶️ Iniciar Cámara</button>
+<button onclick="detenerCamara()">⏹️ Detener Cámara</button>
+<br><br>
+
+<!-- Stream de la cámara -->
+<img id="camara" src="" width="720" style="display:none; border: 2px solid #333;">
+
+<script>
+    function iniciarCamara() {
+        const camara = document.getElementById('camara');
+        camara.src = "{{ url_for('video_feed') }}";
+        camara.style.display = 'block';
+    }
+
+    function detenerCamara() {
+        const camara = document.getElementById('camara');
+        camara.src = "";  // Detiene el stream al remover el src
+        camara.style.display = 'none';
+    }
+</script>
+{% endblock %}
