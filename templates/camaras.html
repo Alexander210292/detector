@@ -1,29 +1,83 @@
 {% extends "base.html" %}
 {% block title %}Cámaras{% endblock %}
+
 {% block content %}
-<h1>📹 Cámaras en tiempo real</h1>
-<h2>👁️ Cámara en Vivo - Bienvenido {{ nombre }}</h2>
-<br><br>
+<div style="display: flex; min-height: 80vh;">
 
-<!-- Botones de control -->
-<button onclick="iniciarCamara()">▶️ Iniciar Cámara</button>
-<button onclick="detenerCamara()">⏹️ Detener Cámara</button>
-<br><br>
+  <!-- Panel lateral -->
+  <div style="width: 250px; background-color: #f8f9fa; padding: 20px; box-shadow: 2px 0 5px rgba(0,0,0,0.1);">
+    <h2 style="text-align: center;">🎛️ Control</h2>
+    <p><strong>Estado:</strong> <span id="estado-camara" style="color: red;">Inactiva</span></p>
+    <button onclick="iniciarCamara('video_feed')" style="width: 100%; margin: 10px 0; padding: 10px; background-color: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer;">▶️ Iniciar con detección</button>
+    <button onclick="iniciarCamara('video_feed_simple')" style="width: 100%; margin: 10px 0; padding: 10px; background-color: #17a2b8; color: white; border: none; border-radius: 5px; cursor: pointer;">🎥 Iniciar sin detección</button>
+    <button onclick="detenerCamara()" style="width: 100%; margin: 10px 0; padding: 10px; background-color: #dc3545; color: white; border: none; border-radius: 5px; cursor: pointer;">⏹️ Detener Cámara</button>
+    <br><br>
+  </div>
 
-<!-- Stream de la cámara -->
-<img id="camara" src="" width="720" style="display:none; border: 2px solid #333;">
+  <!-- Pantalla cámara -->
+  <div style="flex-grow: 1; padding: 20px; display: flex; justify-content: center; align-items: center; background-color: #e9ecef;">
+    <img id="camara" src="" style="display:none; max-width: 90%; max-height: 80vh; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
+  </div>
+</div>
+
+<!-- Notificación flotante -->
+<div id="alerta" 
+     style="
+         display: none;
+         position: fixed;
+         top: 20px;
+         right: 20px;
+         background: linear-gradient(135deg, #ff4e50, #f9d423);
+         color: white;
+         padding: 15px 20px;
+         border-radius: 12px;
+         box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+         cursor: pointer;
+         font-weight: bold;
+         font-size: 16px;
+         z-index: 9999;
+     "
+     onmouseover="this.style.transform='scale(1.05)'"
+     onmouseout="this.style.transform='scale(1)'"
+     onclick="window.location.href='{{ url_for('capturas') }}'">
+    📩 <strong>¡Nueva detección!</strong> Haz clic para ver 📸
+</div>
 
 <script>
-    function iniciarCamara() {
-        const camara = document.getElementById('camara');
-        camara.src = "{{ url_for('video_feed') }}";
+    let alerta = document.getElementById('alerta');
+    let camara = document.getElementById('camara');
+    let estadoCamara = document.getElementById('estado-camara');
+    let monitorInterval = null;
+
+    function iniciarCamara(endpoint) {
+        camara.src = "{{ url_for('video_feed') }}".replace('video_feed', endpoint);
         camara.style.display = 'block';
+        estadoCamara.textContent = "Activa";
+        estadoCamara.style.color = "green";
+
+        // Monitorear alerta cada 3 segundos
+        if (monitorInterval) clearInterval(monitorInterval);
+        monitorInterval = setInterval(verificarAlerta, 3000);
     }
 
     function detenerCamara() {
-        const camara = document.getElementById('camara');
-        camara.src = "";  // Detiene el stream al remover el src
+        camara.src = "";
         camara.style.display = 'none';
+        estadoCamara.textContent = "Inactiva";
+        estadoCamara.style.color = "red";
+        alerta.style.display = 'none';
+        if (monitorInterval) clearInterval(monitorInterval);
+    }
+
+    function verificarAlerta() {
+        fetch('/check_alert')
+            .then(response => response.json())
+            .then(data => {
+                if (data.alerta) {
+                    alerta.style.display = 'block';
+                }
+            })
+            .catch(err => console.error(err));
     }
 </script>
 {% endblock %}
