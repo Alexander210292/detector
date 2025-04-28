@@ -1,6 +1,6 @@
-# 🎥 Sistema de Detección de Acoso con Flask + YOLOv8
+# 🎥 Sistema de Detección  con Flask + YOLO
 
-Este es un sistema web que utiliza **Flask** y el modelo **YOLOv8 (`acoso.pt`)** para detectar comportamientos sospechosos en tiempo real usando la cámara de tu PC. Incluye funcionalidades de login, visualización en vivo, registro de capturas y alertas básicas.
+Este es un sistema web que utiliza **Flask** y el modelo **YOLO (`acoso.pt`)** para detectar comportamientos sospechosos en tiempo real usando la cámara de tu PC. Incluye funcionalidades de login, visualización en vivo, registro de capturas y alertas básicas.
 
 ---
 
@@ -18,7 +18,7 @@ Este es un sistema web que utiliza **Flask** y el modelo **YOLOv8 (`acoso.pt`)**
 
 | Correo               | Contraseña |
 |----------------------|------------|
-| alex@correo.com      | alex6090   |
+| alex@gmail.com      | alex6090   |
 
 ---
 
