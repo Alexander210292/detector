@@ -14,19 +14,11 @@ Este es un sistema web que utiliza **Flask** y el modelo **YOLO (`acoso.pt`)** p
 
 ---
 
-## 🧪 Usuario de prueba
-
-| Correo               | Contraseña |
-|----------------------|------------|
-| alex@gmail.com      | alex6090   |
-
----
-
 ## ⚙️ Requisitos
 
 - Python 3.10+
 - PostgreSQL
-- `acoso.pt` (modelo YOLOv5 entrenado)
+- `acoso.pt` (modelo YOLO entrenado)
 - Librerías de Python:
 
 ```bash
